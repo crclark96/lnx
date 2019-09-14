@@ -1,0 +1,4 @@
+ror bl, 3
+rol rcx, 7
+shr edx, 3
+shl eax, 0
