@@ -65,11 +65,14 @@ statements: /* empty */
           ;
 
 statement: REG op0 REG SEMI
-            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3); }
+            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+              free($1); free($2); free($3); }
          | REG op0 NUMBER SEMI
-            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3); }
+            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+              free($1); free($2); free($3); }
          | REG op1 NUMBER SEMI
-            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3); }
+            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+              free($1); free($2); free($3); }
          ;
 
 /* operations where rhs -> REG | NUMBER */
