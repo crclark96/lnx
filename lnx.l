@@ -14,11 +14,11 @@
 ">>"                        yylval=strdup("ror"); return ROR;
 ">"                         yylval=strdup("shr"); return SHR;
 "<"                         yylval=strdup("shl"); return SHL;
+"*"                         yylval=strdup("imul"); return IMUL;
+"**"                        yylval=strdup("mul"); return MUL;
+"/"                         yylval=strdup("idiv"); return IDIV;
+"//"                        yylval=strdup("div"); return DIV;
 "<>"                        printf("neq\n");
-"*"                         printf("imul\n");
-"**"                        printf("mul\n");
-"/"                         printf("idiv\n");
-"//"                        printf("div\n");
 "^"                         printf("xor\n");
 "++"                        printf("adc\n");
 "'"                         printf("db\n");

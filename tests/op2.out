@@ -1,0 +1,5 @@
+imul ah
+mul dx
+idiv cl
+div bx
+neg ax
