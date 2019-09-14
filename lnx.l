@@ -18,8 +18,8 @@
 "**"                        yylval=strdup("mul"); return MUL;
 "/"                         yylval=strdup("idiv"); return IDIV;
 "//"                        yylval=strdup("div"); return DIV;
+"^"                         yylval=strdup("xor"); return XOR;
 "<>"                        printf("neq\n");
-"^"                         printf("xor\n");
 "++"                        printf("adc\n");
 "'"                         printf("db\n");
 "\""                        printf("dw\n");

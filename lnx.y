@@ -56,7 +56,8 @@ int main(int argc, char **argv) {
 
 %define api.value.type {char *}
 
-%token REG NUMBER SEMI ASGN PLUS MINUS ROL ROR SHR SHL IDIV DIV IMUL MUL
+%token REG NUMBER SEMI ASGN PLUS MINUS ROL ROR SHR SHL
+%token IDIV DIV IMUL MUL XOR
 
 %%
 
@@ -85,6 +86,8 @@ op0: PLUS
       { $$=$1; };
    | ASGN
       { $$=$1; };
+   | XOR
+      { $$=$1; };
    ;
 
 /* operations where rhs -> NUMBER */
@@ -110,4 +113,7 @@ op2: IDIV
    | MINUS
       { $$=$1;
         memcpy($1, "neg", 3); };
+   | XOR
+      { $$=$1;
+        memcpy($1, "not", 3); };
    ;
