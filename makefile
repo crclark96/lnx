@@ -1,7 +1,8 @@
 LEX = flex
 YACC = bison
 
-TESTS = $(wildcard tests/*.asm)
+TESTS_SRC = $(wildcard tests/*.lnx)
+TESTS = $(TESTS_SRC:.lnx=.asm)
 
 .PHONY:all
 all: lnx
