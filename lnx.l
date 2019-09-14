@@ -5,7 +5,7 @@
 
 %%
 [re]?[abcd]x|[abcd][hl]     yylval=strdup(yytext); return REG;
-[0-9]+                      yylval=strdup(yytext); return NUMBER;
+[0-9]+|0x[0-9a-fA-F]+       yylval=strdup(yytext); return NUMBER;
 ";"                         yylval=strdup(yytext); return SEMI;
 "="                         yylval=strdup("mov"); return ASGN;
 "+"                         yylval=strdup("add"); return PLUS;

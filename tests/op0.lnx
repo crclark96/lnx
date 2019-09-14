@@ -3,4 +3,4 @@ bl - al;
 edx = 102;
 dx = cx;
 ecx ^ edx;
-ebx ^ 123;
+ebx ^ 0xde123;

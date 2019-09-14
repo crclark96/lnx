@@ -3,4 +3,4 @@ sub bl, al
 mov edx, 102
 mov dx, cx
 xor ecx, edx
-xor ebx, 123
+xor ebx, 0xde123
