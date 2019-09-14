@@ -10,11 +10,11 @@
 "="                         yylval=strdup("mov"); return ASGN;
 "+"                         yylval=strdup("add"); return PLUS;
 "-"                         yylval=strdup("sub"); return MINUS;
-"<<"                        printf("rol\n");
-">>"                        printf("ror\n");
+"<<"                        yylval=strdup("rol"); return ROL;
+">>"                        yylval=strdup("ror"); return ROR;
+">"                         yylval=strdup("shr"); return SHR;
+"<"                         yylval=strdup("shl"); return SHL;
 "<>"                        printf("neq\n");
-">"                         printf("shr\n");
-"<"                         printf("shl\n");
 "*"                         printf("imul\n");
 "**"                        printf("mul\n");
 "/"                         printf("idiv\n");
@@ -35,6 +35,5 @@
 "&"                         printf("and\n");
 \n                          /* ignore EOL */
 [\s\t ]+                    /* ignore whitespace */
-" "                         /* ignore spaces */
 %%
 

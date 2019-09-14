@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 
 %define api.value.type {char *}
 
-%token REG NUMBER SEMI ASGN PLUS MINUS
+%token REG NUMBER SEMI ASGN PLUS MINUS ROL ROR SHR SHL
 
 %%
 
@@ -64,17 +64,31 @@ statements: /* empty */
           | statements statement
           ;
 
-statement: REG op REG SEMI
-            { fprintf (yyout, "%s %s %s\n", $2, $1, $3); }
-         | REG op NUMBER SEMI
-            { fprintf (yyout, "%s %s %s\n", $2, $1, $3); }
+statement: REG op0 REG SEMI
+            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3); }
+         | REG op0 NUMBER SEMI
+            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3); }
+         | REG op1 NUMBER SEMI
+            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3); }
          ;
 
-op: PLUS
+/* operations where rhs -> REG | NUMBER */
+op0: PLUS
       { $$=$1; };
-  | MINUS
+   | MINUS
       { $$=$1; };
-  | ASGN
+   | ASGN
       { $$=$1; };
-  ;
+   ;
+
+/* operations where rhs -> NUMBER */
+op1: ROL
+      { $$=$1; };
+   | ROR
+      { $$=$1; };
+   | SHR
+      { $$=$1; };
+   | SHL
+      { $$=$1; };
+   ;
 
