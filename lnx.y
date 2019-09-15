@@ -80,10 +80,6 @@ exp: exp op0 REG
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
         free($2); free($3); }
-   | exp op2 REG
-      { $$=$1;
-        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($2); free($3); }
    | REG op0 REG
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
