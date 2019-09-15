@@ -55,6 +55,7 @@ int main(int argc, char **argv) {
 %}
 
 %define api.value.type {char *}
+%define parse.error verbose
 
 %token REG NUMBER SEMI ASGN PLUS MINUS ROL ROR SHR SHL
 %token IDIV DIV IMUL MUL XOR
