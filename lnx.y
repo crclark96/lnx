@@ -96,6 +96,10 @@ exp: exp op0 REG
       { $$=$2;
         fprintf (yyout, "%s %s\n", $1, $2);
         free($2); }
+   | REG op3
+      { $$=$1;
+        fprintf (yyout, "%s %s\n", $2, $1);
+        free($2); }
    ;
 
 /* operations where rhs -> REG | NUMBER */
@@ -139,3 +143,11 @@ op2: IDIV
       { $$=$1;
         memcpy($1, "not", 3); };
    ;
+
+/* post increment and decrement operations */
+op3: PLUS
+      { $$=$1;
+        memcpy($1, "inc", 3); };
+   | MINUS
+      { $$=$1;
+        memcpy($1, "dec", 3); };
