@@ -71,83 +71,77 @@ statement: exp SEMI
 exp: exp op0 REG
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($2); free($3); }
+        free($3); }
    | exp op0 NUMBER
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($2); free($3); }
+        free($3); }
    | exp op1 NUMBER
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($2); free($3); }
+        free($3); }
    | REG op0 REG
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($2); free($3); }
+        free($3); }
    | REG op0 NUMBER
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($2); free($3); }
+        free($3); }
    | REG op1 NUMBER
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($2); free($3); }
+        free($3); }
    | op2 REG
       { $$=$2;
-        fprintf (yyout, "%s %s\n", $1, $2);
-        free($2); }
+        fprintf (yyout, "%s %s\n", $1, $2); }
+
    | REG op3
       { $$=$1;
-        fprintf (yyout, "%s %s\n", $2, $1);
-        free($2); }
+        fprintf (yyout, "%s %s\n", $2, $1); }
    ;
 
 /* operations where rhs -> REG | NUMBER */
 op0: PLUS
-      { $$=$1; };
+      { $$="add"; };
    | MINUS
-      { $$=$1; };
+      { $$="sub"; };
    | ASGN
-      { $$=$1; };
+      { $$="mov"; };
    | XOR
-      { $$=$1; };
+      { $$="xor"; };
    ;
 
 /* operations where rhs -> NUMBER */
 op1: ROL
-      { $$=$1; };
+      { $$="rol"; };
    | ROR
-      { $$=$1; };
+      { $$="ror"; };
    | SHR
-      { $$=$1; };
+      { $$="shr"; };
    | SHL
-      { $$=$1; };
+      { $$="shl"; };
    ;
 
 /* operations that take only a register */
 op2: IDIV
-      { $$=$1; };
+      { $$="idiv"; };
    | IMUL
-      { $$=$1; };
+      { $$="imul"; };
    | DIV
-      { $$=$1; };
+      { $$="div"; };
    | MUL
-      { $$=$1; };
+      { $$="mul"; };
    | MINUS
-      { $$=$1;
-        memcpy($1, "neg", 3); };
+      { $$="neg"; };
    | PLUS
-      { $$=$1;
-        memcpy($1, "inc", 3); };
+      { $$="inc"; };
    | XOR
-      { $$=$1;
-        memcpy($1, "not", 3); };
+      { $$="not"; };
    ;
 
 /* post increment and decrement operations */
 op3: PLUS
-      { $$=$1;
-        memcpy($1, "inc", 3); };
+      { $$="inc"; };
    | MINUS
-      { $$=$1;
-        memcpy($1, "dec", 3); };
+      { $$="dec"; };
