@@ -65,19 +65,42 @@ statements: /* empty */
           | statements statement
           ;
 
-statement: REG op0 REG SEMI
-            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-              free($1); free($2); free($3); }
-         | REG op0 NUMBER SEMI
-            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-              free($1); free($2); free($3); }
-         | REG op1 NUMBER SEMI
-            { fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-              free($1); free($2); free($3); }
-         | op2 REG SEMI
-            { fprintf (yyout, "%s %s\n", $1, $2);
-              free($1); free($2); }
-         ;
+statement: exp SEMI
+            { free($1); }
+
+exp: exp op0 REG
+      { $$=$1;
+        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+        free($2); free($3); }
+   | exp op0 NUMBER
+      { $$=$1;
+        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+        free($2); free($3); }
+   | exp op1 NUMBER
+      { $$=$1;
+        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+        free($2); free($3); }
+   | exp op2 REG
+      { $$=$1;
+        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+        free($2); free($3); }
+   | REG op0 REG
+      { $$=$1;
+        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+        free($2); free($3); }
+   | REG op0 NUMBER
+      { $$=$1;
+        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+        free($2); free($3); }
+   | REG op1 NUMBER
+      { $$=$1;
+        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
+        free($2); free($3); }
+   | op2 REG
+      { $$=$1;
+        fprintf (yyout, "%s %s\n", $1, $2);
+        free($2); }
+   ;
 
 /* operations where rhs -> REG | NUMBER */
 op0: PLUS

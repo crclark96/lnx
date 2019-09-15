@@ -1,0 +1,5 @@
+mov ax, 5
+add ax, bx
+sub ax, dx
+mov ax, dx
+ror ax, 5
