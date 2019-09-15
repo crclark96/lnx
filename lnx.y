@@ -93,7 +93,7 @@ exp: exp op0 REG
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
         free($2); free($3); }
    | op2 REG
-      { $$=$1;
+      { $$=$2;
         fprintf (yyout, "%s %s\n", $1, $2);
         free($2); }
    ;
@@ -132,6 +132,9 @@ op2: IDIV
    | MINUS
       { $$=$1;
         memcpy($1, "neg", 3); };
+   | PLUS
+      { $$=$1;
+        memcpy($1, "inc", 3); };
    | XOR
       { $$=$1;
         memcpy($1, "not", 3); };
