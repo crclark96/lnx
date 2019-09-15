@@ -20,7 +20,6 @@
 "//"                        return DIV;
 "^"                         return XOR;
 "<>"                        printf("neq\n");
-"++"                        printf("adc\n");
 "'"                         printf("db\n");
 "\""                        printf("dw\n");
 "\"\""                      printf("dd\n");

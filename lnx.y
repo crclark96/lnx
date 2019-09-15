@@ -81,6 +81,9 @@ exp: exp op0 REG
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
         free($3); }
+   | exp op3
+      { $$=$1;
+        fprintf (yyout, "%s %s\n", $2, $1); }
    | REG op0 REG
       { $$=$1;
         fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
@@ -96,14 +99,14 @@ exp: exp op0 REG
    | op2 REG
       { $$=$2;
         fprintf (yyout, "%s %s\n", $1, $2); }
-
    | REG op3
       { $$=$1;
         fprintf (yyout, "%s %s\n", $2, $1); }
    ;
 
 /* operations where rhs -> REG | NUMBER */
-op0: PLUS
+op0:
+   PLUS
       { $$="add"; };
    | MINUS
       { $$="sub"; };
@@ -146,3 +149,4 @@ op3: PLUS
       { $$="inc"; };
    | MINUS
       { $$="dec"; };
+   ;

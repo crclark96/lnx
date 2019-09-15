@@ -1,2 +1,6 @@
 inc ax
 dec bx
+inc ax
+inc ax
+dec bx
+dec bx
