@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
 %define parse.error verbose
 
 %token REG NUMBER SEMI ASGN PLUS MINUS ROL ROR SHR SHL
-%token IDIV DIV IMUL MUL XOR
+%token IDIV DIV IMUL MUL XOR AND WS
 
 %%
 
@@ -66,45 +66,63 @@ statements: /* empty */
           | statements statement
           ;
 
-statement: exp SEMI
+statement: dep_exp SEMI
             { free($1); }
+         | idp_exp SEMI
+            { free($1); }
+         ;
 
-exp: exp op0 REG
-      { $$=$1;
-        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($3); }
-   | exp op0 NUMBER
-      { $$=$1;
-        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($3); }
-   | exp op1 NUMBER
-      { $$=$1;
-        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($3); }
-   | exp op3
-      { $$=$1;
-        fprintf (yyout, "%s %s\n", $2, $1); }
-   | REG op0 REG
-      { $$=$1;
-        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($3); }
-   | REG op0 NUMBER
-      { $$=$1;
-        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($3); }
-   | REG op1 NUMBER
-      { $$=$1;
-        fprintf (yyout, "%s %s, %s\n", $2, $1, $3);
-        free($3); }
-   | op2 REG
-      { $$=$2;
-        fprintf (yyout, "%s %s\n", $1, $2); }
-   | REG op3
-      { $$=$1;
-        fprintf (yyout, "%s %s\n", $2, $1); }
-   ;
+dep_exp: dep_exp WS op0 WS REG
+          { $$=$1;
+            fprintf (yyout, "%s %s, %s\n", $3, $1, $5);
+            free($5); }
+       | dep_exp WS op0 WS NUMBER
+          { $$=$1;
+            fprintf (yyout, "%s %s, %s\n", $3, $1, $5);
+            free($5); }
+       | dep_exp WS op1 WS NUMBER
+          { $$=$1;
+            fprintf (yyout, "%s %s, %s\n", $3, $1, $5);
+            free($5); }
+       | REG WS op0 WS REG
+          { $$=$1;
+            fprintf (yyout, "%s %s, %s\n", $3, $1, $5);
+            free($5); }
+       | REG WS op0 WS NUMBER
+          { $$=$1;
+            fprintf (yyout, "%s %s, %s\n", $3, $1, $5);
+            free($5); }
+       | REG WS op1 WS NUMBER
+          { $$=$1;
+            fprintf (yyout, "%s %s, %s\n", $3, $1, $5);
+            free($5); }
+       ;
 
-/* operations where rhs -> REG | NUMBER */
+idp_exp: idp_exp WS op4 REG
+          { if (strcmp($1,"clr") == 0)
+              fprintf (yyout, "%s %s, %s\n", "xor", $4, $4);
+            else
+              fprintf (yyout, "%s %s\n", $3, $4);
+            $$=$1; }
+       | idp_exp WS REG op5
+          { fprintf (yyout, "%s %s\n", $4, $3);
+            $$=$1; }
+       | idp_exp op5
+          { fprintf (yyout, "%s %s\n", $2, $1);
+            $$=$1; }
+       | op4 REG
+          { if (strcmp($1,"clr") == 0)
+              fprintf (yyout, "%s %s, %s\n", "xor", $2, $2);
+            else
+              fprintf (yyout, "%s %s\n", $1, $2);
+            $$=$2; }
+       | REG op5
+          { fprintf (yyout, "%s %s\n", $2, $1);
+            $$=$1; }
+       ;
+
+/* operations where rhs -> REG | NUMBER
+      can be chained in dependent expressions */
 op0:
    PLUS
       { $$="add"; };
@@ -114,9 +132,12 @@ op0:
       { $$="mov"; };
    | XOR
       { $$="xor"; };
+   | AND
+      { $$="and"; };
    ;
 
-/* operations where rhs -> NUMBER */
+/* operations where rhs -> NUMBER
+      can be chained in dependent expressions*/
 op1: ROL
       { $$="rol"; };
    | ROR
@@ -127,8 +148,9 @@ op1: ROL
       { $$="shl"; };
    ;
 
-/* operations that take only a register */
-op2: IDIV
+/* operations that take only a register
+      can be chained in independent expressions */
+op4: IDIV
       { $$="idiv"; };
    | IMUL
       { $$="imul"; };
@@ -136,16 +158,23 @@ op2: IDIV
       { $$="div"; };
    | MUL
       { $$="mul"; };
-   | MINUS
-      { $$="neg"; };
+   | ASGN
+      { $$="push"; };
    | PLUS
       { $$="inc"; };
+   | MINUS
+      { $$="neg"; };
    | XOR
       { $$="not"; };
+   | AND
+      { $$="clr"; };
    ;
 
-/* post increment and decrement operations */
-op3: PLUS
+/* post register operations
+      can be chained in independent expressions */
+op5: ASGN
+      { $$="pop"; };
+   | PLUS
       { $$="inc"; };
    | MINUS
       { $$="dec"; };

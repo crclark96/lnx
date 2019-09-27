@@ -19,6 +19,7 @@
 "/"                         return IDIV;
 "//"                        return DIV;
 "^"                         return XOR;
+"&"                         return AND;
 "<>"                        printf("neq\n");
 "'"                         printf("db\n");
 "\""                        printf("dw\n");
@@ -31,8 +32,7 @@
 "-."                        printf("loop\n");
 "=."                        printf("call\n");
 ".="                        printf("ret\n");
-"&"                         printf("and\n");
+[\s\t ]+                    return WS;
 \n                          /* ignore EOL */
-[\s\t ]+                    /* ignore whitespace */
 %%
 
