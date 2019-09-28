@@ -6,6 +6,7 @@
 %%
 [re]?[abcd]x|[abcd][hl]     yylval=strdup(yytext); return REG;
 [0-9]+|0x[0-9a-fA-F]+       yylval=strdup(yytext); return NUMBER;
+[a-z][a-zA-Z0-9]*           yylval=strdup(yytext); return ID;
 ";"                         return SEMI;
 "="                         return ASGN;
 "+"                         return PLUS;
@@ -20,10 +21,10 @@
 "//"                        return DIV;
 "^"                         return XOR;
 "&"                         return AND;
+"'"                         return BYTE;
+"\""                        return WORD;
+"\"\""                      return DWORD;
 "<>"                        printf("neq\n");
-"'"                         printf("db\n");
-"\""                        printf("dw\n");
-"\"\""                      printf("dd\n");
 "["                         printf("open bracket\n");
 "]"                         printf("close bracket\n");
 "!"                         printf("interrupt\n");

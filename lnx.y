@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
 %define parse.error verbose
 
 %token REG NUMBER SEMI ASGN PLUS MINUS ROL ROR SHR SHL
-%token IDIV DIV IMUL MUL XOR AND WS
+%token IDIV DIV IMUL MUL XOR AND WS ID BYTE WORD DWORD
 
 %%
 
@@ -70,7 +70,24 @@ statement: dep_exp SEMI
             { free($1); }
          | idp_exp SEMI
             { free($1); }
+         | decl WS ID SEMI
+            { fprintf (yyout, "%s %s ?\n", $1, $3);
+              free($3); }
+         | decl WS ID WS ASGN NUMBER SEMI
+            { fprintf (yyout, "%s %s %s\n", $1, $3, $6);
+              free($3); free($6); }
+         | decl WS ID WS ASGN ID SEMI
+            { fprintf (yyout, "%s %s %s\n", $1, $3, $6);
+              free($3); free($6); }
          ;
+
+decl: BYTE
+      { $$="db"; }
+    | WORD
+      { $$="dw"; }
+    | DWORD
+      { $$="dd"; }
+    ;
 
 dep_exp: dep_exp WS op0 WS REG
           { $$=$1;
